@@ -225,7 +225,7 @@ export default function SunMintApp() {
         <div className="rounded-2xl border border-amber-400/15 bg-amber-400/[.04] p-6 text-sm text-amber-100/80">
           <p className="text-xs uppercase tracking-[0.3em] text-amber-300">Coverage</p>
           <p className="mt-3">
-            For Sui Overflow we ship the on-chain flow against Sui Testnet using the trial wallet.
+            We ship the on-chain flow against Sui Testnet using the trial wallet.
             Production v2 swaps the JSON inverter feed for a real DePIN attestation (Helium-on-Sui /
             IoTeX / Solana DePIN bridges). Reviewers can connect their own wallet via Mysten dApp
             Kit and buy slices from their address with the same UX.

@@ -29,7 +29,7 @@ export default function Home() {
       <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-[1.1fr_1fr] md:items-center">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-amber-300">
-            Explorations track · Sui Overflow 2026
+            Real-world yield · Sui Testnet
           </p>
           <h1 className="mt-4 text-balance text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl">
             Own a roof you&apos;ve never seen.
@@ -93,7 +93,7 @@ export default function Home() {
           <Link href="/" className="flex items-center gap-2">
             <Wordmark className="h-6 text-amber-100/80" />
           </Link>
-          <span>Built for Sui Overflow 2026 · Explorations track</span>
+          <span>Sui Testnet · open source</span>
         </div>
       </footer>
     </main>

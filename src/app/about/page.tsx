@@ -51,7 +51,7 @@ export default function AboutPage() {
 
         <h2 className="mt-12 text-2xl font-semibold tracking-tight">Oracle path</h2>
         <p className="mt-3 max-w-2xl text-base text-amber-100/80">
-          For the MVP the oracle is a curated JSON endpoint posting daily kWh per panel. Production
+          Today the oracle is a curated JSON endpoint posting daily kWh per panel. Production
           v2 reads from a DePIN attestation source (Helium-on-Sui, IoTeX, or a Solana DePIN bridge),
           and the Move function gates the settle on a multi-sig oracle signature.
         </p>
@@ -67,7 +67,7 @@ export default function AboutPage() {
 
       <footer className="border-t border-amber-400/10">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 text-xs text-amber-100/60">
-          <span>Built for Sui Overflow 2026 · Explorations track</span>
+          <span>Sui Testnet · open source</span>
           <Link href="/app" className="text-amber-100 hover:text-white">
             Try the demo →
           </Link>

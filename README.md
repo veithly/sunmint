@@ -1,61 +1,75 @@
-# SunMint
+<p align="center">
+  <img src="public/brand/wordmark.svg" alt="SunMint" width="320" />
+</p>
 
-### Tokenize your rooftop solar. Earn USDC per kWh.
+<p align="center">
+  <b>SunMint</b> — Own a slice of a solar roof — USDC dividends paid daily.
+</p>
 
-*Homeowners crowdfund panels with global retail investors. Daily settle in USDC. On Sui.*
+<p align="center">
+  <a href="https://sunmint.veithly.workers.dev"><img alt="Live" src="https://img.shields.io/badge/Live-sunmint.veithly.workers.dev-fb923c?style=for-the-badge"></a>
+  <a href="https://sunmint.veithly.workers.dev/app"><img alt="Open app" src="https://img.shields.io/badge/Open_app-/app-0ea5e9?style=for-the-badge"></a>
+  <a href="https://nextjs.org"><img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge"></a>
+  <a href="https://sui.io"><img alt="Sui Testnet" src="https://img.shields.io/badge/Sui_Testnet-live-4DA2FF?style=for-the-badge"></a>
+  <a href="./LICENSE"><img alt="MIT" src="https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge"></a>
+</p>
 
-> **Regulatory disclaimer:** SunMint tokens are forward-revenue-share contracts, not equity. Availability depends on jurisdiction. Pilot panels are in Bolivia and Kenya.
+<p align="center">
+  <img src="docs/screenshots/hero.png" alt="SunMint hero" width="880" />
+</p>
 
-[![Live Marketplace](https://img.shields.io/badge/Marketplace-Open-22c55e?style=for-the-badge)](https://sunmint.app/marketplace)
-[![Sui Overflow 2026](https://img.shields.io/badge/Hackathon-Sui_Overflow_2026-0891b2?style=for-the-badge)](https://overflow.sui.io/)
-[![Track](https://img.shields.io/badge/Track-Explorations-f59e0b?style=for-the-badge)](#)
+## Why SunMint
 
-**Quick links:**
-[Combined Pitch+Demo](./pitch/recording/combined.mp4) ·
-[Marketplace](https://sunmint.app/marketplace) ·
-[PRD](./project_prd.md)
+Rooftop solar is one of the highest-return small-scale infrastructure investments — but the capital is locked into the homeowner's balance sheet, and the dividend (the daily feed-in tariff) is illiquid. SunMint tokenizes the feed-in tariff. Homeowners issue token-rights to the future kWh from their roof; investors anywhere buy a slice; every day the panel produces, a Sui PTB pays USDC dividends back to token holders in proportion to their share.
 
----
+## What it does
 
-## Why SunMint is different
+Open the app. Browse the roof marketplace — each listing shows the panel kWh history, location, expected yield, and the share price in USDC. Pick one. Click Buy. The trial wallet path runs the demo; connect for real ownership.
 
-| | Bank loan | Solar lease | DeFi yield | **SunMint** |
-| --- | --- | --- | --- | --- |
-| Homeowner upfront | 0 (debt) | 0 (lease) | n/a | **0 (token sale)** |
-| Investor yield source | n/a | n/a | emissions | **real kWh sold** |
-| Global retail access | n/a | n/a | yes | **yes** |
-| Audit trail | bank | lease co. | n/a | **on-chain kWh + dividend** |
+The daily oracle posts the panel's kWh production. The dividend PTB splits the day's revenue across token holders proportionally. Open the holdings dashboard to see your daily inflow, your projected annual yield, and the on-chain receipt for every payout.
 
-## Hero moment
+<p align="center">
+  <img src="docs/screenshots/flow.png" alt="SunMint primary flow" width="880" />
+</p>
 
-```
-0:00 Jose lists 1.2 kW panel — €6/token, 1500 tokens
-0:01 Click Publish — PTB digest
-0:02 Panel appears on marketplace with live kW gauge
-0:03 Mei buys 10 tokens for $20
-0:05 Mei's dividend counter ticks +$0.011 USDC for today
-```
+## Architecture
 
-## How it works
+Next.js 15 + Mysten dApp Kit. The Move `sunmint_core` module mints `RoofToken` shares against a `Roof` asset object; the daily settlement PTB reads a curated oracle and pays USDC proportionally. Full pipeline in [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md).
 
-```mermaid
-flowchart LR
-  jose[Homeowner] -->|list_panel PTB| panel[Panel object]
-  mei[Investor] -->|buy_tokens PTB| panel
-  inverter[IoT inverter] -->|kWh| oracle[Oracle]
-  oracle -->|daily| settle[settle_day PTB]
-  settle -->|USDC| holders[Token holders]
+## Quick start
+
+```bash
+pnpm install
+cp .env.example .env.local   # fill SUI_FULLNODE_URL + LLM key (see below)
+pnpm dev                     # http://localhost:3200
 ```
 
-## Track fit — Explorations
+Required env vars:
+- `SUI_FULLNODE_URL` — Sui Testnet RPC endpoint (default: `https://fullnode.testnet.sui.io:443`)
+- `SUI_DEMO_PRIVATE_KEY` — Ed25519 secret key for the hosted-wallet ("Try instantly") flow. Leave blank to require a connected wallet.
+- `STEPFUN_API_KEY` (or `OPENAI_API_KEY`) — reasoning engine key, only required for the AI-driven flows.
 
-| Rubric | Hit |
-| --- | --- |
-| RWA | Physical solar panels |
-| DePIN | Inverter data → on-chain settle |
-| Global asset coordination | Singapore investor funds Mexico panel |
-| Sui object model | Panel + Token + DividendPool |
-| Mass adoption | Homeowner + climate retail audiences |
+Production build + Cloudflare deploy:
+
+```bash
+pnpm build
+pnpm run deploy   # opennextjs-cloudflare deploy
+```
+
+End-to-end smoke test:
+
+```bash
+pnpm test:e2e
+```
+
+## Tech stack
+
+- **Next.js 15** App Router · React 19 · Tailwind v4 · shadcn/ui base
+- **@mysten/dapp-kit-react** for wallet connection + transaction signing
+- **@mysten/sui** for PTB construction + RPC
+- **OpenNext** for Cloudflare Workers deployment
+- **Playwright** for end-to-end test coverage
 
 ## License
-MIT.
+
+MIT © veithly

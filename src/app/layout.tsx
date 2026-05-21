@@ -3,7 +3,7 @@ import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://suioverflow-sunmint.veithly.workers.dev"),
+  metadataBase: new URL("https://sunmint.veithly.workers.dev"),
   title: "SunMint — Own a roof you've never seen",
   description:
     "SunMint tokenizes a solar feed-in tariff on Sui. Buy tokens, earn USDC dividends from real kWh produced. Climate yield without emissions inflation.",

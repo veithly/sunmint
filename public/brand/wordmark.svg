@@ -16,5 +16,5 @@
     <line x1="7" y1="39" x2="12" y2="34"/>
     <line x1="32" y1="14" x2="37" y2="9"/>
   </g>
-  <text x="52" y="32" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="24" letter-spacing="-0.4" fill="currentColor">SunMint</text>
+  <text x="52" y="32" font-family="-apple-system, system-ui, sans-serif" font-weight="800" font-size="24" letter-spacing="-0.4" fill="#fffbeb">SunMint</text>
 </svg>
