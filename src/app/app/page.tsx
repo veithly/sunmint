@@ -198,7 +198,7 @@ export default function SunMintApp() {
               <div className="flex items-center justify-between text-emerald-200">
                 <span className="text-[11px] uppercase tracking-[0.25em]">Token minted</span>
                 <span className="rounded-full border border-emerald-300/40 bg-emerald-300/10 px-2 py-0.5 text-[10px] text-emerald-100">
-                  {result.mode === "real" ? `Real PTB · ${result.signer}` : "Dry-run"}
+                  {result.mode === "real" ? `Real Move call · ${result.signer}` : "Dry-run"}
                 </span>
               </div>
               {result.digest ? (

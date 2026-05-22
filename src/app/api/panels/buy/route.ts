@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { Transaction } from "@mysten/sui/transactions";
-import { getDemoKeypair, getSuiClient } from "@/lib/sui-server";
+import {
+  CLOCK_OBJECT_ID,
+  firstCreatedObjectId,
+  getDemoKeypair,
+  getMovePackageId,
+  getSuiClient,
+  stringToBytes,
+} from "@/lib/sui-server";
 import { z } from "zod";
 
 const Body = z.object({
@@ -12,8 +19,6 @@ const Body = z.object({
   signerAddress: z.string().optional(),
 });
 
-const BUY_MIST = 100_000_000;
-
 export async function POST(req: Request) {
   const parsed = Body.safeParse(await req.json().catch(() => ({})));
   if (!parsed.success) {
@@ -23,14 +28,21 @@ export async function POST(req: Request) {
     );
   }
   const { signedDigest, signerAddress, panelId, tokens, tokenPriceUsd, estDailyDividendUsd } = parsed.data;
+  const packageId = getMovePackageId();
   const position = { panelId, tokens, tokenPriceUsd, estDailyDividendUsd };
+
+  if (!packageId) {
+    return NextResponse.json({ error: "NEXT_PUBLIC_MOVE_PACKAGE_ID is not configured" }, { status: 503 });
+  }
 
   if (signedDigest) {
     return NextResponse.json({
       ok: true,
       mode: "real",
+      chainMode: "move-call",
       signer: "client",
       signerAddress: signerAddress ?? null,
+      packageId,
       digest: signedDigest,
       position,
     });
@@ -42,6 +54,7 @@ export async function POST(req: Request) {
       ok: true,
       mode: "dry-run",
       signer: "none",
+      packageId,
       digest: null,
       position,
       note: "Connect a wallet, or set SUI_DEMO_PRIVATE_KEY for a real on-chain token mint.",
@@ -51,19 +64,30 @@ export async function POST(req: Request) {
   try {
     const client = getSuiClient();
     const tx = new Transaction();
-    const [coin] = tx.splitCoins(tx.gas, [BUY_MIST]);
-    tx.transferObjects([coin], keypair.toSuiAddress());
+    tx.moveCall({
+      target: `${packageId}::panel::buy`,
+      arguments: [
+        tx.pure.vector("u8", stringToBytes(panelId)),
+        tx.pure.u64(tokens),
+        tx.pure.u64(Math.round(tokenPriceUsd * 100)),
+        tx.pure.u64(Math.round(estDailyDividendUsd * 100)),
+        tx.object(CLOCK_OBJECT_ID),
+      ],
+    });
     tx.setSender(keypair.toSuiAddress());
     const result = await client.signAndExecuteTransaction({
       signer: keypair,
       transaction: tx,
-      options: { showEffects: true },
+      options: { showEffects: true, showObjectChanges: true, showEvents: true },
     });
     return NextResponse.json({
       ok: true,
       mode: "real",
+      chainMode: "move-call",
       signer: "server-demo",
       signerAddress: keypair.toSuiAddress(),
+      packageId,
+      objectId: firstCreatedObjectId(result, "::panel::PanelToken"),
       digest: result.digest,
       position,
     });

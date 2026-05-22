@@ -19,6 +19,8 @@
     "SUI_FULLNODE_URL": "https://fullnode.testnet.sui.io:443",
     "NEXT_PUBLIC_SUI_FULLNODE_URL": "https://fullnode.testnet.sui.io:443",
     "NEXT_PUBLIC_APP_URL": "https://sunmint.veithly.workers.dev",
+    "NEXT_PUBLIC_MOVE_PACKAGE_ID": "0xb0a78ba5cebcdfc69cea4264cc36090ab9d39842c0b6241fe8bd1c30ac12ab7e",
+    "MOVE_PACKAGE_ID": "0xb0a78ba5cebcdfc69cea4264cc36090ab9d39842c0b6241fe8bd1c30ac12ab7e",
     "STEPFUN_API_BASE": "https://api.stepfun.com/v1",
     "STEPFUN_LLM_MODEL": "step-3.6",
     "OPENAI_LLM_MODEL": "gpt-4o-mini",
